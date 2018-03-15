@@ -1,11 +1,21 @@
 .wrapper {
-  position: relative;
-
-  width: 500px;
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
   margin: 0 auto;
 }
+
+.tuner-scale {
+  position: relative;
+}
+
+.tuner-note {
+  font-family: monospace;
+  font-size: 50px;
+  vertical-align: middle;
+}
+
 .scale {
-  margin-top: 50px;
   width: 10px;
   background-color: brown;
 }
@@ -36,4 +46,8 @@
   width: 50px;
   height: 2px;
   background-color: blue;
+
+  top: 50%;
+  transform: translateY(-50%);
+  transition: top 0.3s ease;
 }

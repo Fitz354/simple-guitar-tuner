@@ -1,8 +1,12 @@
 import { findPitch } from 'pitchy';
 import findNote from './findNote';
 
-const renderNote = (note, cents) => {
+const noteElement = document.querySelector('.tuner-note');
+const pointerElement = document.querySelector('.pointer');
 
+const renderNote = ({ note, offset, octave }) => {
+  pointerElement.style.top = `${100 - ( offset + 50)}%`;
+  noteElement.innerHTML = note + octave;
 };
 
 navigator.mediaDevices.getUserMedia({ audio: true })
@@ -19,8 +23,8 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     setInterval(() => {
       analyser.getFloatTimeDomainData(data);
       const [pitch, clarity] = findPitch(data, context.sampleRate);
-      if (clarity > 0.9) {
-        findNote(pitch);
+      if (clarity > 0.8) {
+        renderNote(findNote(pitch));
       }
     }, 300);
   })
