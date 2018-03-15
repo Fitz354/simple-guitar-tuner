@@ -1,0 +1,39 @@
+.wrapper {
+  position: relative;
+
+  width: 500px;
+  margin: 0 auto;
+}
+.scale {
+  margin-top: 50px;
+  width: 10px;
+  background-color: brown;
+}
+
+.scale__point {
+  position: relative;
+
+  margin-left: -30px;
+  height: 18px;
+}
+
+.scale__point::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  content: "";
+  display: block;
+  width: 10px;
+  height: 2px;
+  background-color: #000000;
+}
+
+.pointer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background-color: blue;
+}

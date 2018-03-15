@@ -1,0 +1,21 @@
+{
+  "name": "simple-tuner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest --watch",
+    "parcel": "parcel",
+    "start": "parcel -p 4000 index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pitchy": "^1.0.3"
+  },
+  "devDependencies": {
+    "jest": "^23.0.0-alpha.0",
+    "parcel-bundler": "^1.6.2"
+  }
+}
