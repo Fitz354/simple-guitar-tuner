@@ -8,26 +8,32 @@
   <title>Simple tuner</title>
 </head>
 <body>
+  <h1>Pull the sting</h1>
   <main>
-    <div class="wrapper">
-      <div class="tuner-scale">
-        <div class="pointer"></div>
-        <div class="scale">
-          <div class="scale__point">50</div>
-          <div class="scale__point">40</div>
-          <div class="scale__point">30</div>
-          <div class="scale__point">20</div>
-          <div class="scale__point">10</div>
-          <div class="scale__point">0</div>
-          <div class="scale__point">-10</div>
-          <div class="scale__point">-20</div>
-          <div class="scale__point">-30</div>
-          <div class="scale__point">-40</div>
-          <div class="scale__point">-50</div>
+    <div class="tuner-wrapper">
+      <div class="tuner">
+        <div class="offset-wrapper">
+          <div class="offset">
+            <span>♯</span>
+            <div class="light light-dies light-red"></div>
+          </div>
+          <div class="offset">
+            <span>▼</span>
+            <div class="light light-normal light-green"></div>
+            <span>▲</span>
+          </div>
+          <div class="offset">
+            <div class="light light-bemole light-red"></div>
+            <span>♭</span>
+          </div>
         </div>
+        <div class="scale">
+          <canvas id="canvas" width="300" height="300"></canvas>
+          <div class="pointer"></div>
+        </div>
+        <div class="note"></div>
       </div>
-      <div class="tuner-note">E3</div>
-    </div>
+    </div>   
   </main>
   <script src="js/main.js"></script>
 </body>
