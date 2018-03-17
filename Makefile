@@ -11,6 +11,10 @@ build:
 	npm run build
 
 start-prod:
-	rm -rf dist
 	npm run build
 	npm run server
+
+deploy:
+	git push heroku master
+	heroku ps:scale web=1
+	heroku open

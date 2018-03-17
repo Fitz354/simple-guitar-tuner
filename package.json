@@ -1,8 +1,10 @@
 {
   "name": "simple-tuner",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "version": "0.0.1",
+  "description": "Simple guitar tuner using Web Audio API",
+  "engines": {
+    "node": "9.4"
+  },
   "scripts": {
     "test": "jest",
     "eslint": "eslint js",
@@ -11,17 +13,17 @@
     "build": "parcel build src/index.html --public-url ./",
     "server": "http-server dist"
   },
-  "author": "",
+  "author": "Lozovsky Alexander",
   "license": "ISC",
   "dependencies": {
     "http-server": "^0.11.1",
-    "pitchy": "^1.0.3"
+    "pitchy": "^1.0.3",
+    "parcel-bundler": "^1.6.2"
   },
   "devDependencies": {
     "eslint": "^4.19.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.9.0",
-    "jest": "^23.0.0-alpha.0",
-    "parcel-bundler": "^1.6.2"
+    "jest": "^22.4.2"
   }
 }

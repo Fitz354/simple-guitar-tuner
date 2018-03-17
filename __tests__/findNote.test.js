@@ -1,4 +1,4 @@
-const findNote = require('../js/findNote');
+const findNote = require('../src/js/findNote');
 
 it('60', () => expect(findNote(60)).toEqual({ note: 'B', offset: -49, octave: 1 }));
 
