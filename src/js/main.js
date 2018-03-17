@@ -6,15 +6,17 @@ const pointerElement = document.querySelector('.pointer');
 const lightsElements = [...document.querySelectorAll('.light')];
 
 const renderLights = offsetClass =>
-  lightsElements.forEach(item => item.style.opacity = (item.classList.contains(offsetClass) ? 1 : 0.3));
+  lightsElements.forEach(({ style, classList }) => {
+    style.opacity = (classList.contains(offsetClass) ? 1 : 0.3);
+  });
 
 const renderNote = ({ note, offset, octave }) => {
-  const pointerAngle = offset * 90 / 50;
+  const pointerAngle = (offset * 90) / 50;
   pointerElement.style.transform =
     `translate(-50%, -50%) rotate(${pointerAngle}deg)`;
   noteElement.innerHTML = note + octave;
 
-  if (offset => -5 && offset <= 5 ) {
+  if (offset >= -5 && offset <= 5) {
     renderLights('light-normal');
   } else if (offset > 5) {
     renderLights('light-dies');
@@ -28,12 +30,12 @@ const drawScale = () => {
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = 'green';
   ctx.beginPath();
-  ctx.arc(150, 150, 150, 0, Math.PI, true);  // Mouth (clockwise)
+  ctx.arc(150, 150, 150, 0, Math.PI, true);
   ctx.stroke();
 };
 
 navigator.mediaDevices.getUserMedia({ audio: true })
-  .then(stream => {
+  .then((stream) => {
     const context = new AudioContext();
     const source = context.createMediaStreamSource(stream);
 
@@ -42,7 +44,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     const data = new Float32Array(analyser.fftSize);
 
     const destination = context.createMediaStreamDestination();
-    
+
     source.connect(analyser).connect(destination);
 
     setInterval(() => {

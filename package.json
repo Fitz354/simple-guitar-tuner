@@ -4,17 +4,23 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
+    "eslint": "eslint js",
     "parcel": "parcel",
-    "start": "parcel -p 4000 index.html",
-    "build": "parcel build index.html"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url ./",
+    "server": "http-server dist"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "http-server": "^0.11.1",
     "pitchy": "^1.0.3"
   },
   "devDependencies": {
+    "eslint": "^4.19.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
     "jest": "^23.0.0-alpha.0",
     "parcel-bundler": "^1.6.2"
   }
