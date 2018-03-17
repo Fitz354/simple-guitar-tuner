@@ -1,5 +1,5 @@
 {
-  "name": "simple-tuner",
+  "name": "simple-guitar-tuner",
   "version": "0.0.1",
   "description": "Simple guitar tuner using Web Audio API",
   "engines": {

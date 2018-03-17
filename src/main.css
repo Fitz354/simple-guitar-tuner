@@ -9,17 +9,20 @@ h1 {
   align-items: center;
   justify-content: center
 }
+
 .tuner {
   display: flex;
   align-items: flex-start;
   justify-content: center;
 }
+
 .offset {
   width: 30px;
 
   text-align: center;
   font-size: 30px;
 }
+
 .light {
   width: 30px;
   height: 30px;
@@ -41,24 +44,9 @@ h1 {
 .scale {
   position: relative;
 
-  width: 300px;
-  height: 300px;
   margin: 0 50px;
-}
-
-.pointer {
-  position: absolute;
-  left: 50%;
-  bottom: 25%;
-
-  width: 1px;
-  height: 150px;
-
-  transform-origin: center bottom;
-  transform: translate(-50%, -50%) rotate(90deg);
-  transition: transform 300ms ease;
-
-  background-color: #000000;
+  font-size: 0;
+  line-height: 0;
 }
 
 .note {
