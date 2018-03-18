@@ -7,26 +7,30 @@ const radius = canvas.width / 2;
 
 const startAngleIndex = 1.2;
 const endAngleIndex = 1.8;
-const centerIndex = startAngleIndex + ((endAngleIndex - startAngleIndex) / 2);
+const centerAngleIndex = (startAngleIndex + endAngleIndex) / 2;
 const centsCoff = (endAngleIndex - startAngleIndex) / 100;
 
 const digits = [-50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50];
 const digitsOffsetFromArc = -canvas.width / 20;
 
-const arrowWidth = canvas.width / 50;
+const arrowWidth = 5;
 
 const startAngle = startAngleIndex * Math.PI;
 const endAngle = endAngleIndex * Math.PI;
 const zonesCount = digits.length - 1;
 const step = (endAngleIndex - startAngleIndex) / zonesCount;
-const tickOffsetFromArc = canvas.width / 100;
+const tickOffsetFromArc = canvas.width / 200;
+
+const state = {
+  arrowAngleIndex: centerAngleIndex,
+  lastAnimationId: null,
+};
 
 const drawShape = () => {
   ctx.beginPath();
   ctx.arc(middleX, middleY, radius, startAngle, endAngle, false);
   ctx.lineWidth = 5;
   ctx.strokeStyle = '#000';
-
   ctx.stroke();
 };
 
@@ -69,8 +73,8 @@ const drawDigits = () => {
   });
 };
 
-const drawArrow = (arrowValueIndex) => {
-  const arrowAngle = arrowValueIndex * Math.PI;
+const drawArrow = (arrowAngleIndex) => {
+  const arrowAngle = arrowAngleIndex * Math.PI;
   const toX = middleX + (radius * Math.cos(arrowAngle));
   const toY = middleY + (radius * Math.sin(arrowAngle));
 
@@ -82,10 +86,31 @@ const drawArrow = (arrowValueIndex) => {
   ctx.stroke();
 };
 
-export default (cents) => {
+const drawAll = (arrowAngleIndex) => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawShape();
   drawTicks();
   drawDigits();
-  drawArrow(centerIndex + (cents * centsCoff));
+  drawArrow(arrowAngleIndex);
+};
+
+export default (cents) => {
+  const resultIndex = centerAngleIndex + (cents * centsCoff);
+  const offset = resultIndex - state.arrowAngleIndex;
+  const angleIndexStep = offset / 15;
+
+  const animateArrow = () => {
+    if (Math.abs(resultIndex - state.arrowAngleIndex) <= Math.abs(angleIndexStep)) {
+      drawAll(resultIndex);
+      state.arrowAngleIndex = resultIndex;
+      return;
+    }
+
+    state.arrowAngleIndex += angleIndexStep;
+    drawAll(state.arrowAngleIndex);
+    state.lastAnimationId = window.requestAnimationFrame(animateArrow);
+  };
+
+  cancelAnimationFrame(state.lastAnimationId);
+  state.lastAnimationId = window.requestAnimationFrame(animateArrow);
 };
