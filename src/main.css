@@ -35,6 +35,10 @@ html, body, main, .tuner-wrapper {
   border-radius: 50%;
 }
 
+.lightbulb.active {
+  opacity: 1;
+}
+
 .lightbulb-red {
   background-color: rgb(255, 0, 21);
   opacity: 0.3;

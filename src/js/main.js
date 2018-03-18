@@ -5,20 +5,27 @@ import drawScale from './drawScale';
 const lightsElements = document.querySelectorAll('.lightbulb');
 
 const renderLightbulbs = offsetClass =>
-  lightsElements.forEach(({ style, classList }) => {
-    style.opacity = (classList.contains(offsetClass) ? 1 : 0.3); // eslint-disable-line
+  lightsElements.forEach(({ classList }) => {
+    if (classList.contains(offsetClass)) {
+      classList.add('active');
+      return;
+    }
+    classList.remove('active');
   });
 
 const renderNote = ({ name, cents, octave }) => {
-  drawScale(`${name}${octave}`, cents);
+  let lightbulbType = '';
 
   if (cents >= -5 && cents <= 5) {
-    renderLightbulbs('lightbulb-normal');
+    lightbulbType = 'normal';
   } else if (cents > 5) {
-    renderLightbulbs('lightbulb-dies');
+    lightbulbType = 'dies';
   } else {
-    renderLightbulbs('lightbulb-bemole');
+    lightbulbType = 'bemole';
   }
+
+  drawScale(`${name}${octave}`, cents);
+  renderLightbulbs(`lightbulb-${lightbulbType}`);
 };
 
 navigator.mediaDevices.getUserMedia({ audio: true })
