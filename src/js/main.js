@@ -2,24 +2,22 @@ import { findPitch } from 'pitchy';
 import getNoteFromPitch from './getNoteFromPitch';
 import drawScale from './drawScale';
 
-const noteElement = document.querySelector('.note');
-const lightsElements = document.querySelectorAll('.light');
+const lightsElements = document.querySelectorAll('.lightbulb');
 
-const renderLights = offsetClass =>
+const renderLightbulbs = offsetClass =>
   lightsElements.forEach(({ style, classList }) => {
     style.opacity = (classList.contains(offsetClass) ? 1 : 0.3); // eslint-disable-line
   });
 
 const renderNote = ({ name, cents, octave }) => {
-  drawScale(cents);
-  noteElement.innerHTML = `${name}${octave}`;
+  drawScale(`${name}${octave}`, cents);
 
   if (cents >= -5 && cents <= 5) {
-    renderLights('light-normal');
+    renderLightbulbs('lightbulb-normal');
   } else if (cents > 5) {
-    renderLights('light-dies');
+    renderLightbulbs('lightbulb-dies');
   } else {
-    renderLights('light-bemole');
+    renderLightbulbs('lightbulb-bemole');
   }
 };
 
@@ -45,4 +43,4 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     }, 300);
   });
 
-drawScale(0);
+drawScale('', 0);
