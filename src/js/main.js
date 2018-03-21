@@ -21,9 +21,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       analyser.getFloatTimeDomainData(data);
       const [pitch, clarity] = findPitch(data, context.sampleRate);
       if (clarity > 0.9 && pitch > 50) {
-        // pitch |> getNoteFromPitch |> render;
-        const note = getNoteFromPitch(pitch);
-        render(note);
+        render(getNoteFromPitch(pitch));
       }
     }, 100);
   });
