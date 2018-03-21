@@ -47,7 +47,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       if (clarity > 0.9 && pitch > 50) {
         renderNote(getNoteFromPitch(pitch));
       }
-    }, 300);
+    }, 100);
   });
 
 drawScale('', 0);
