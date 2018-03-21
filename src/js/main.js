@@ -1,32 +1,8 @@
 import { findPitch } from 'pitchy';
 import getNoteFromPitch from './getNoteFromPitch';
-import drawScale from './drawScale';
+import render from './render';
 
-const lightsElements = document.querySelectorAll('.lightbulb');
-
-const renderLightbulbs = offsetClass =>
-  lightsElements.forEach(({ classList }) => {
-    if (classList.contains(offsetClass)) {
-      classList.add('active');
-      return;
-    }
-    classList.remove('active');
-  });
-
-const renderNote = ({ name, cents, octave }) => {
-  let lightbulbType = '';
-
-  if (cents >= -5 && cents <= 5) {
-    lightbulbType = 'normal';
-  } else if (cents > 5) {
-    lightbulbType = 'dies';
-  } else {
-    lightbulbType = 'bemole';
-  }
-
-  drawScale(`${name}${octave}`, cents);
-  renderLightbulbs(`lightbulb-${lightbulbType}`);
-};
+render({ cents: -50 });
 
 navigator.mediaDevices.getUserMedia({ audio: true })
   .then((stream) => {
@@ -45,9 +21,9 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       analyser.getFloatTimeDomainData(data);
       const [pitch, clarity] = findPitch(data, context.sampleRate);
       if (clarity > 0.9 && pitch > 50) {
-        renderNote(getNoteFromPitch(pitch));
+        // pitch |> getNoteFromPitch |> render;
+        const note = getNoteFromPitch(pitch);
+        render(note);
       }
     }, 100);
   });
-
-drawScale('', 0);
