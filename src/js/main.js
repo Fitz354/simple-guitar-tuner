@@ -20,8 +20,10 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     setInterval(() => {
       analyser.getFloatTimeDomainData(data);
       const [pitch, clarity] = findPitch(data, context.sampleRate);
-      if (clarity > 0.9 && pitch > 50) {
-        render(getNoteFromPitch(pitch));
+      const note = getNoteFromPitch(pitch);
+
+      if (clarity > 0.9 && note) {
+        render(note);
       }
     }, 100);
   });
