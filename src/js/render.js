@@ -33,16 +33,17 @@ const ticksCoords = digits.map((digit, index) =>
 
 const arrowWidth = 3;
 const arrowLength = 50;
+const animationFramesCount = 15;
 
 const noteFontSize = 50;
 const noteY = (arcY - arcRadius) + arrowLength + (noteFontSize / 2);
 
+const lightsElements = document.querySelectorAll('.lightbulb');
+
 const state = {
-  arrowAngleIndex: centerAngleIndex,
+  arrowAngleIndex: startAngleIndex,
   lastAnimationId: null,
 };
-
-const lightsElements = document.querySelectorAll('.lightbulb');
 
 const drawLightbulbs = (cents) => {
   let lightbulbType = '';
@@ -141,7 +142,7 @@ export default (note) => {
   const noteName = name ? `${name}${octave}` : '';
   const resultIndex = centerAngleIndex + (cents * centsPerAngleIndex);
   const offset = resultIndex - state.arrowAngleIndex;
-  const angleIndexStep = offset / 10;
+  const angleIndexStep = offset / animationFramesCount;
 
   const animateArrow = () => {
     if (Math.abs(resultIndex - state.arrowAngleIndex) <= Math.abs(angleIndexStep)) {
