@@ -1,11 +1,10 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const middleX = canvas.width / 2;
-const middleY = canvas.height;
-const radius = canvas.width / 2;
-const arcHeight = 5;
-
+const arcX = canvas.width / 2;
+const arcY = canvas.height;
+const arcRadius = canvas.width / 2;
+const arcHeight = 3;
 const startAngleIndex = 1.2;
 const endAngleIndex = 1.8;
 const centerAngleIndex = (startAngleIndex + endAngleIndex) / 2;
@@ -13,17 +12,30 @@ const centsPerAngleIndex = (endAngleIndex - startAngleIndex) / 100;
 const startAngle = startAngleIndex * Math.PI;
 const endAngle = endAngleIndex * Math.PI;
 
-const digits = [-50, 0, 50];
-const digitsOffsetFromArc = -canvas.width / 20;
-const dotsRadius = 8;
+const digits = [-50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50];
+const step = (endAngleIndex - startAngleIndex) / (digits.length - 1);
+const digitsOffsetFromArc = 20;
+const tickLength = 8;
+const tickWidth = 2;
+const digitsAngles = digits.map((digit, index) => (startAngleIndex + (step * index)) * Math.PI);
+const digitsCoords = digits.map((digit, index) =>
+  ({
+    x: arcX + ((arcRadius + digitsOffsetFromArc) * Math.cos(digitsAngles[index])),
+    y: arcY + ((arcRadius + digitsOffsetFromArc) * Math.sin(digitsAngles[index])),
+  }));
+const ticksCoords = digits.map((digit, index) =>
+  ({
+    fromX: arcX + (arcRadius * Math.cos(digitsAngles[index])),
+    fromY: arcY + (arcRadius * Math.sin(digitsAngles[index])),
+    toX: arcX + ((arcRadius - tickLength) * Math.cos(digitsAngles[index])),
+    toY: arcY + ((arcRadius - tickLength) * Math.sin(digitsAngles[index])),
+  }));
 
-const arrowWidth = 5;
+const arrowWidth = 3;
 const arrowLength = 50;
 
-const zonesCount = digits.length - 1;
-const step = (endAngleIndex - startAngleIndex) / zonesCount;
-
-const noteY = (middleY - radius) + arrowLength + 25;
+const noteFontSize = 50;
+const noteY = (arcY - arcRadius) + arrowLength + (noteFontSize / 2);
 
 const state = {
   arrowAngleIndex: centerAngleIndex,
@@ -54,56 +66,64 @@ const drawLightbulbs = (cents) => {
 
 const drawArc = () => {
   ctx.beginPath();
-  ctx.arc(middleX, middleY, radius, startAngle, endAngle, false);
+  ctx.arc(arcX, arcY, arcRadius, startAngle, endAngle, false);
   ctx.lineWidth = arcHeight;
   ctx.strokeStyle = '#000000';
   ctx.stroke();
 };
 
 const drawNote = (name) => {
-  ctx.font = 'bold 50px Tahoma';
-  ctx.fillStyle = '#000000';
+  ctx.font = `bold ${noteFontSize}px Tahoma`;
+  ctx.fillStyle = '#161616';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(name, radius, noteY);
+  ctx.fillText(name, arcRadius, noteY);
 };
 
 const drawDigits = () => {
   digits.forEach((digit, index) => {
-    const angle = (startAngleIndex + (step * index)) * Math.PI;
+    const { x, y } = digitsCoords[index];
 
-    const x = middleX + ((radius - digitsOffsetFromArc) * Math.cos(angle));
-    const y = middleY + ((radius - digitsOffsetFromArc) * Math.sin(angle));
-
-    const xDot = middleX + (radius * Math.cos(angle));
-    const yDot = middleY + (radius * Math.sin(angle));
-
-    ctx.font = 'bold 20px Tahoma';
-    ctx.fillStyle = '#746845';
+    ctx.font = '16px Tahoma';
+    ctx.fillStyle = '#000000';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(digit, x, y);
+  });
+};
+
+const drawTicks = () => {
+  digits.forEach((digit, index) => {
+    const {
+      fromX,
+      fromY,
+      toX,
+      toY,
+    } = ticksCoords[index];
 
     ctx.beginPath();
-    ctx.arc(xDot, yDot, dotsRadius, 0, 2 * Math.PI);
-    ctx.fillStyle = '#000000';
-    ctx.fill();
+    ctx.moveTo(fromX, fromY);
+    ctx.lineTo(toX, toY);
+    ctx.lineWidth = tickWidth;
+    ctx.lineCap = 'butt';
+    ctx.strokeStyle = '#000000';
+    ctx.stroke();
   });
 };
 
 const drawArrow = (arrowAngleIndex) => {
   const angle = arrowAngleIndex * Math.PI;
-  const fromX = middleX + ((radius - arrowLength) * Math.cos(angle));
-  const fromY = middleY + ((radius - arrowLength) * Math.sin(angle));
-  const toX = middleX + (radius * Math.cos(angle));
-  const toY = middleY + (radius * Math.sin(angle));
+  const fromX = arcX + ((arcRadius - arrowLength) * Math.cos(angle));
+  const fromY = arcY + ((arcRadius - arrowLength) * Math.sin(angle));
+  const toX = arcX + (arcRadius * Math.cos(angle));
+  const toY = arcY + (arcRadius * Math.sin(angle));
 
   ctx.beginPath();
   ctx.moveTo(fromX, fromY);
   ctx.lineTo(toX, toY);
   ctx.lineWidth = arrowWidth;
   ctx.lineCap = 'round';
-  ctx.strokeStyle = '#746845';
+  ctx.strokeStyle = '#c41f09';
   ctx.stroke();
 };
 
@@ -111,6 +131,7 @@ const drawScale = (name, arrowAngleIndex) => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawArc();
   drawDigits();
+  drawTicks();
   drawNote(name);
   drawArrow(arrowAngleIndex);
 };
@@ -120,7 +141,7 @@ export default (note) => {
   const noteName = name ? `${name}${octave}` : '';
   const resultIndex = centerAngleIndex + (cents * centsPerAngleIndex);
   const offset = resultIndex - state.arrowAngleIndex;
-  const angleIndexStep = offset / 15;
+  const angleIndexStep = offset / 10;
 
   const animateArrow = () => {
     if (Math.abs(resultIndex - state.arrowAngleIndex) <= Math.abs(angleIndexStep)) {
