@@ -1,6 +1,9 @@
 test:
 	npm test
 
+lint:
+	npm run eslint
+
 watch:
 	npm test -- --watch
 
