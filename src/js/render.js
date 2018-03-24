@@ -33,10 +33,11 @@ const ticksCoords = digits.map((digit, index) =>
 
 const arrowWidth = 3;
 const arrowLength = 50;
-const animationFramesCount = 15;
 
 const noteFontSize = 50;
 const noteY = (arcY - arcRadius) + arrowLength + (noteFontSize / 2);
+
+const animationFramesCount = 15;
 
 const lightsElements = document.querySelectorAll('.lightbulb');
 

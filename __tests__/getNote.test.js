@@ -1,6 +1,6 @@
 const getNote = require('../src/js/getNoteFromPitch');
 
-it('27,4', () => expect(getNote(27,4)).toBeFalsy());
+it('27,4', () => expect(getNote(27.4)).toBeFalsy());
 
 it('27.5', () => expect(getNote(27.5)).toEqual({ name: 'A', cents: 0, octave: 0 }));
 
