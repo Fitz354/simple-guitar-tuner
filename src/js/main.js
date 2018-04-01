@@ -2,6 +2,15 @@ import { findPitch } from 'pitchy';
 import getNoteFromPitch from './getNoteFromPitch';
 import render from './render';
 
+// const standartTune = [
+//   { note: 'E', octave: 2, pitch: 82.41 },
+//   { note: 'A', octave: 2, pitch: 110 },
+//   { note: 'D', octave: 3, pitch: 146.83 },
+//   { note: 'G', octave: 3, pitch: 196 },
+//   { note: 'B', octave: 3, pitch: 246.94 },
+//   { note: 'E', octave: 4, pitch: 329.63 },
+// ];
+
 render({ cents: -50 });
 
 navigator.mediaDevices.getUserMedia({ audio: true })

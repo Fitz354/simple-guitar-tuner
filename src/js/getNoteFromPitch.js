@@ -1,4 +1,5 @@
-const notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
 const baseFrequency = 440;
 const notesNumber = notes.length;
 const frequencyRange = {
@@ -11,7 +12,7 @@ module.exports = (pitch) => {
     return false;
   }
 
-  const result = (notesNumber * Math.log2(pitch / baseFrequency)) + (notesNumber * 4);
+  const result = (notesNumber * Math.log2(pitch / baseFrequency)) + ((notesNumber * 4) + 9);
   const noteIndex = Math.abs(Math.round(result) % notesNumber);
 
   const name = notes[noteIndex];
