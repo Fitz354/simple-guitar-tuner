@@ -7,7 +7,22 @@ const frequencyRange = {
   max: 1318.5,
 };
 
-module.exports = (pitch) => {
+export const getPitchFromNote = (note) => {
+  let noteIndex = 0;
+  notes.some((item, index) => {
+    if (item === note.name) {
+      noteIndex = index;
+      return true;
+    }
+
+    return false;
+  });
+
+  const offset = ((noteIndex - 9) - (notesNumber * (4 - note.octave))) / notesNumber;
+  return Math.round((2 ** offset) * baseFrequency * 100) / 100;
+};
+
+export const getNoteFromPitch = (pitch) => {
   if (pitch < frequencyRange.min || pitch > frequencyRange.max) {
     return false;
   }

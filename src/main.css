@@ -53,3 +53,11 @@ canvas {
   display: block;
   margin: 0 auto;
 }
+
+.tunings {
+  padding: 5px;
+
+  font-family: 'Tahoma', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}

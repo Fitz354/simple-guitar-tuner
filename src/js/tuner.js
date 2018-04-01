@@ -1,8 +1,15 @@
 import { findPitch } from 'pitchy';
-import * as tuners from './tuners';
+import * as tunings from './tunings';
 import render from './render';
 
-const getNote = tuners.standart;
+let { parse } = tunings.chromatic;
+
+const selectElement = document.querySelector('.tunings');
+selectElement.innerHTML =
+  `<select>${Object.keys(tunings).map(key => `<option value=${key}>${tunings[key].name}</option>`).join('')}</select>`;
+selectElement.addEventListener('change', () => {
+  ({ parse } = tunings[selectElement.value]);
+});
 
 render({ cents: -50 });
 
@@ -22,10 +29,9 @@ window.navigator.mediaDevices.getUserMedia({ audio: true })
     setInterval(() => {
       analyser.getFloatTimeDomainData(data);
       const [pitch, clarity] = findPitch(data, context.sampleRate);
-      const note = getNote(pitch);
 
-      if (clarity > 0.9 && note) {
-        render(note);
+      if (clarity > 0.9) {
+        render(parse(pitch));
       }
     }, 100);
   });

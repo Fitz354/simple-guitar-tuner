@@ -139,6 +139,10 @@ const drawScale = (name, arrowAngleIndex) => {
 };
 
 export default (note) => {
+  if (!note) {
+    return;
+  }
+
   const { name, octave, cents } = note;
   const noteName = name ? `${name}${octave}` : '';
   const resultIndex = centerAngleIndex + (cents * centsPerAngleIndex);

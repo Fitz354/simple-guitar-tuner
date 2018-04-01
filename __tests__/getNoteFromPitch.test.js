@@ -1,4 +1,4 @@
-const getNote = require('../src/js/getNoteFromPitch');
+const getNote = require('../src/js/сonverters').getNoteFromPitch;
 
 it('27,4', () => expect(getNote(27.4)).toBeFalsy());
 
