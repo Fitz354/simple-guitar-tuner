@@ -1,6 +1,6 @@
 import { getPitchFromNote, getNoteFromPitch } from './сonverters';
 
-const standardTuning = [
+const standardStrings = [
   { name: 'E', octave: 2 },
   { name: 'A', octave: 2 },
   { name: 'D', octave: 3 },
@@ -9,8 +9,15 @@ const standardTuning = [
   { name: 'E', octave: 4 },
 ];
 
-const getParser = (notes) => {
-  const tuning = notes.map(item => ({ ...item, pitch: getPitchFromNote(item) }));
+const ukuleleStrings = [
+  { name: 'G', octave: 4 },
+  { name: 'C', octave: 4 },
+  { name: 'E', octave: 4 },
+  { name: 'A', octave: 4 },
+];
+
+const getParser = (stringsList) => {
+  const strings = stringsList.map(item => ({ ...item, pitch: getPitchFromNote(item) }));
 
   return (pitch) => {
     const note = getNoteFromPitch(pitch);
@@ -18,13 +25,13 @@ const getParser = (notes) => {
       return false;
     }
 
-    if (tuning.some(({ name, octave }) => note.name === name && note.octave === octave)) {
+    if (strings.some(({ name, octave }) => note.name === name && note.octave === octave)) {
       return note;
     }
 
     let lowerOffset = -Infinity;
 
-    const { name, octave } = tuning.reduce((acc, item) => {
+    const { name, octave } = strings.reduce((acc, item) => {
       const offset = pitch - item.pitch;
       if (Math.abs(offset) < Math.abs(lowerOffset)) {
         lowerOffset = offset;
@@ -45,5 +52,12 @@ export const chromatic = {
 
 export const standard = {
   name: 'Standard',
-  parse: getParser(standardTuning),
+  strings: standardStrings,
+  parse: getParser(standardStrings),
+};
+
+export const ukulele = {
+  name: 'Ukulele',
+  strings: ukuleleStrings,
+  parse: getParser(ukuleleStrings),
 };

@@ -40,6 +40,7 @@ const noteY = (arcY - arcRadius) + arrowLength + (noteFontSize / 2);
 const animationFramesCount = 15;
 
 const lightsElements = document.querySelectorAll('.lightbulb');
+const stringsWrapperElement = document.querySelector('.strings');
 
 const state = {
   arrowAngleIndex: startAngleIndex,
@@ -60,9 +61,19 @@ const drawLightbulbs = (cents) => {
   lightsElements.forEach(({ classList }) => {
     if (classList.contains(`lightbulb-${lightbulbType}`)) {
       classList.add('active');
-      return;
+    } else {
+      classList.remove('active');
     }
-    classList.remove('active');
+  });
+};
+
+const drawActiveString = (name) => {
+  stringsWrapperElement.childNodes.forEach((item) => {
+    if (item.dataset.note === name) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
   });
 };
 
@@ -162,6 +173,8 @@ export default (note) => {
   };
 
   drawLightbulbs(cents);
+  drawActiveString(noteName);
+
   cancelAnimationFrame(state.lastAnimationId);
   state.lastAnimationId = window.requestAnimationFrame(animateArrow);
 };

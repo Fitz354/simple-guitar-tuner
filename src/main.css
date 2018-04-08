@@ -1,5 +1,9 @@
 body {
   margin: 0;
+
+  font-family: 'Tahoma', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 html, body, main, .tuner-wrapper {
@@ -54,10 +58,42 @@ canvas {
   margin: 0 auto;
 }
 
-.tunings {
-  padding: 5px;
+.tuning {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
 
-  font-family: 'Tahoma', sans-serif;
-  font-size: 16px;
-  line-height: 24px;
+.tunings-list {
+  padding: 5px;
+  margin-right: 20px;
+
+  font: inherit;
+}
+
+.strings {
+  display: flex;
+}
+
+.strings-item {
+  margin-right: 20px;
+
+  text-align: center;
+}
+
+.strings-item:last-child {
+  margin-right: 0;
+}
+
+.string-lightbulb {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+  background-color: #e3e5e8;
+  transition: background-color 100ms ease;
+}
+
+.strings-item.active .string-lightbulb {
+  background-color: #f49242;
 }

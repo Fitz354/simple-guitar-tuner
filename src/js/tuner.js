@@ -2,13 +2,26 @@ import { findPitch } from 'pitchy';
 import * as tunings from './tunings';
 import render from './render';
 
-let { parse } = tunings.chromatic;
+let activeTuning = tunings.chromatic;
 
-const selectElement = document.querySelector('.tunings');
-selectElement.innerHTML =
-  `<select>${Object.keys(tunings).map(key => `<option value=${key}>${tunings[key].name}</option>`).join('')}</select>`;
-selectElement.addEventListener('change', () => {
-  ({ parse } = tunings[selectElement.value]);
+const tuningSelectElement = document.querySelector('.tunings-list');
+const stringsListElement = document.querySelector('.strings');
+
+tuningSelectElement.innerHTML =
+  Object.keys(tunings).map(key => `<option value=${key}>${tunings[key].name}</option>`).join('');
+
+tuningSelectElement.addEventListener('change', () => {
+  activeTuning = tunings[tuningSelectElement.value];
+  if (!activeTuning.strings) {
+    stringsListElement.innerHTML = '';
+    return;
+  }
+
+  stringsListElement.innerHTML = activeTuning.strings.map(({ name, octave }) =>
+    `<div class="strings-item" data-note="${name + octave}">
+      <div class="string-lightbulb"></div>
+      <span class="string-name">${name + octave}</span>
+    </div>`).join('');
 });
 
 render({ cents: -50 });
@@ -31,7 +44,7 @@ window.navigator.mediaDevices.getUserMedia({ audio: true })
       const [pitch, clarity] = findPitch(data, context.sampleRate);
 
       if (clarity > 0.9) {
-        render(parse(pitch));
+        render(activeTuning.parse(pitch));
       }
     }, 100);
   });
