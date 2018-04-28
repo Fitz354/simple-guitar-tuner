@@ -11,13 +11,9 @@ start:
 	npm start
 
 build:
+	rm -rf dist
 	npm run build
-
-start-prod:
-	npm run build
-	npm run server
 
 deploy:
-	git push heroku master
-	heroku ps:scale web=1
-	heroku open
+	make build
+	node deploy.js
