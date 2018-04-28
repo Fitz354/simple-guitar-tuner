@@ -1,0 +1,99 @@
+body {
+  margin: 0;
+
+  font-family: 'Tahoma', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+html, body, main, .tuner-wrapper {
+  height: 100%;
+}
+
+.tuner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbulbs {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.lightbulb-wrapper {
+  display: flex;
+  align-items: center;
+
+  text-align: center;
+  font-size: 30px;
+}
+
+.lightbulb {
+  width: 30px;
+  height: 30px;
+  transition: opacity 100ms ease;
+
+  border-radius: 50%;
+}
+
+.lightbulb.active {
+  opacity: 1;
+}
+
+.lightbulb-red {
+  background-color: rgb(255, 0, 21);
+  opacity: 0.3;
+}
+
+.lightbulb-green {
+  background-color: rgb(50, 241, 50);
+  opacity: 0.3;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+.tuning {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.tunings-list {
+  padding: 5px;
+  margin-right: 20px;
+
+  font: inherit;
+}
+
+.strings {
+  display: flex;
+}
+
+.strings-item {
+  margin-right: 20px;
+
+  text-align: center;
+}
+
+.strings-item:last-child {
+  margin-right: 0;
+}
+
+.string-lightbulb {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+  background-color: #e3e5e8;
+  transition: background-color 100ms ease;
+}
+
+.strings-item.active .string-lightbulb {
+  background-color: #f49242;
+}
