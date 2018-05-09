@@ -1,93 +1,30 @@
 import { getPitchFromNote, getNoteFromPitch } from './сonverters';
 
-const standardStrings = [
-  { name: 'E', octave: 2 },
-  { name: 'A', octave: 2 },
-  { name: 'D', octave: 3 },
-  { name: 'G', octave: 3 },
-  { name: 'B', octave: 3 },
-  { name: 'E', octave: 4 },
-];
+const mapStrings = item => ({ ...item, pitch: getPitchFromNote(item) });
 
-const openCStrings = [
-  { name: 'C', octave: 2 },
-  { name: 'G', octave: 2 },
-  { name: 'C', octave: 3 },
-  { name: 'G', octave: 3 },
-  { name: 'C', octave: 4 },
-  { name: 'E', octave: 4 },
-];
+const parse = function parse(pitch) {
+  const note = getNoteFromPitch(pitch);
+  if (!note) {
+    return false;
+  }
 
-const openDStrings = [
-  { name: 'D', octave: 2 },
-  { name: 'A', octave: 2 },
-  { name: 'D', octave: 3 },
-  { name: 'F#', octave: 3 },
-  { name: 'A', octave: 3 },
-  { name: 'D', octave: 4 },
-];
+  if (this.strings.some(({ name, octave }) => note.name === name && note.octave === octave)) {
+    return note;
+  }
 
-const openGStrings = [
-  { name: 'D', octave: 2 },
-  { name: 'G', octave: 2 },
-  { name: 'D', octave: 3 },
-  { name: 'G', octave: 3 },
-  { name: 'B', octave: 3 },
-  { name: 'D', octave: 4 },
-];
+  let lowerOffset = -Infinity;
 
-const dropDStrings = [
-  { name: 'D', octave: 2 },
-  { name: 'A', octave: 2 },
-  { name: 'D', octave: 3 },
-  { name: 'G', octave: 3 },
-  { name: 'B', octave: 3 },
-  { name: 'E', octave: 4 },
-];
-
-const dropCStrings = [
-  { name: 'C', octave: 2 },
-  { name: 'G', octave: 2 },
-  { name: 'C', octave: 3 },
-  { name: 'F', octave: 3 },
-  { name: 'A', octave: 3 },
-  { name: 'D', octave: 4 },
-];
-
-const ukuleleStrings = [
-  { name: 'G', octave: 4 },
-  { name: 'C', octave: 4 },
-  { name: 'E', octave: 4 },
-  { name: 'A', octave: 4 },
-];
-
-const getParser = (stringsList) => {
-  const strings = stringsList.map(item => ({ ...item, pitch: getPitchFromNote(item) }));
-
-  return (pitch) => {
-    const note = getNoteFromPitch(pitch);
-    if (!note) {
-      return false;
+  const { name, octave } = this.strings.reduce((acc, item) => {
+    const offset = pitch - item.pitch;
+    if (Math.abs(offset) < Math.abs(lowerOffset)) {
+      lowerOffset = offset;
+      return item;
     }
 
-    if (strings.some(({ name, octave }) => note.name === name && note.octave === octave)) {
-      return note;
-    }
+    return acc;
+  }, {});
 
-    let lowerOffset = -Infinity;
-
-    const { name, octave } = strings.reduce((acc, item) => {
-      const offset = pitch - item.pitch;
-      if (Math.abs(offset) < Math.abs(lowerOffset)) {
-        lowerOffset = offset;
-        return item;
-      }
-
-      return acc;
-    }, {});
-
-    return { name, octave, cents: (lowerOffset < 0 ? -50 : 50) };
-  };
+  return { name, octave, cents: (lowerOffset < 0 ? -50 : 50) };
 };
 
 export const chromatic = {
@@ -97,42 +34,89 @@ export const chromatic = {
 
 export const standard = {
   name: 'Standard',
-  strings: standardStrings,
-  parse: getParser(standardStrings),
+  strings: [
+    { name: 'E', octave: 2 },
+    { name: 'A', octave: 2 },
+    { name: 'D', octave: 3 },
+    { name: 'G', octave: 3 },
+    { name: 'B', octave: 3 },
+    { name: 'E', octave: 4 },
+  ].map(mapStrings),
+  parse,
 };
 
 export const openC = {
   name: 'Open C',
-  strings: openCStrings,
-  parse: getParser(openCStrings),
+  strings: [
+    { name: 'C', octave: 2 },
+    { name: 'G', octave: 2 },
+    { name: 'C', octave: 3 },
+    { name: 'G', octave: 3 },
+    { name: 'C', octave: 4 },
+    { name: 'E', octave: 4 },
+  ].map(mapStrings),
+  parse,
 };
 
 export const openD = {
   name: 'Open D',
-  strings: openDStrings,
-  parse: getParser(openDStrings),
+  strings: [
+    { name: 'D', octave: 2 },
+    { name: 'A', octave: 2 },
+    { name: 'D', octave: 3 },
+    { name: 'F#', octave: 3 },
+    { name: 'A', octave: 3 },
+    { name: 'D', octave: 4 },
+  ].map(mapStrings),
+  parse,
 };
 
 export const openG = {
   name: 'Open G',
-  strings: openGStrings,
-  parse: getParser(openGStrings),
+  strings: [
+    { name: 'D', octave: 2 },
+    { name: 'G', octave: 2 },
+    { name: 'D', octave: 3 },
+    { name: 'G', octave: 3 },
+    { name: 'B', octave: 3 },
+    { name: 'D', octave: 4 },
+  ].map(mapStrings),
+  parse,
 };
 
 export const dropD = {
   name: 'Drop D',
-  strings: dropDStrings,
-  parse: getParser(dropDStrings),
+  strings: [
+    { name: 'D', octave: 2 },
+    { name: 'A', octave: 2 },
+    { name: 'D', octave: 3 },
+    { name: 'G', octave: 3 },
+    { name: 'B', octave: 3 },
+    { name: 'E', octave: 4 },
+  ].map(mapStrings),
+  parse,
 };
 
 export const dropC = {
   name: 'Drop C',
-  strings: dropCStrings,
-  parse: getParser(dropCStrings),
+  strings: [
+    { name: 'C', octave: 2 },
+    { name: 'G', octave: 2 },
+    { name: 'C', octave: 3 },
+    { name: 'F', octave: 3 },
+    { name: 'A', octave: 3 },
+    { name: 'D', octave: 4 },
+  ].map(mapStrings),
+  parse,
 };
 
 export const ukulele = {
   name: 'Ukulele',
-  strings: ukuleleStrings,
-  parse: getParser(ukuleleStrings),
+  strings: [
+    { name: 'G', octave: 4 },
+    { name: 'C', octave: 4 },
+    { name: 'E', octave: 4 },
+    { name: 'A', octave: 4 },
+  ].map(mapStrings),
+  parse,
 };
