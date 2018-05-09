@@ -15,4 +15,5 @@ build:
 	npm run build
 
 deploy:
+	make build
 	npm run deploy
