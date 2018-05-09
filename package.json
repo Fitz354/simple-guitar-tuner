@@ -10,7 +10,8 @@
     "eslint": "eslint js",
     "parcel": "parcel",
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html --public-url ./"
+    "build": "parcel build src/index.html --public-url ./",
+    "deploy": "gh-pages -d dist"
   },
   "author": "Lozovsky Alexander",
   "license": "ISC",
