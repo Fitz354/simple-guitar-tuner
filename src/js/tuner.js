@@ -5,6 +5,9 @@ import render from './render';
 const tuningSelectElement = document.querySelector('.tunings-list');
 const stringsListElement = document.querySelector('.strings');
 
+const overlayElement = document.querySelector('.overlay');
+const tunerShowBtnElement = document.querySelector('.tuner-show-btn');
+
 const defaultTuning = 'standard';
 let activeTuning = tunings[defaultTuning];
 
@@ -27,29 +30,35 @@ const handleTuningChange = () => {
       </div>`)
     .join('');
 };
+
+const handleGetAudioInput = (stream) => {
+  const context = new AudioContext();
+  const source = context.createMediaStreamSource(stream);
+
+  const analyser = context.createAnalyser();
+  analyser.fftSize = 2048;
+  const data = new Float32Array(analyser.fftSize);
+
+  const destination = context.createMediaStreamDestination();
+
+  source.connect(analyser).connect(destination);
+
+  setInterval(() => {
+    analyser.getFloatTimeDomainData(data);
+    const [pitch, clarity] = findPitch(data, context.sampleRate);
+
+    if (clarity > 0.9) {
+      render(activeTuning.parse(pitch));
+    }
+  }, 100);
+};
+
+tunerShowBtnElement.addEventListener('click', () => {
+  overlayElement.classList.add('closed');
+
+  window.navigator.mediaDevices.getUserMedia({ audio: true }).then(handleGetAudioInput);
+});
+
 handleTuningChange();
 tuningSelectElement.addEventListener('change', handleTuningChange);
 render({ cents: -50 });
-
-window.navigator.mediaDevices.getUserMedia({ audio: true })
-  .then((stream) => {
-    const context = new AudioContext();
-    const source = context.createMediaStreamSource(stream);
-
-    const analyser = context.createAnalyser();
-    analyser.fftSize = 2048;
-    const data = new Float32Array(analyser.fftSize);
-
-    const destination = context.createMediaStreamDestination();
-
-    source.connect(analyser).connect(destination);
-
-    setInterval(() => {
-      analyser.getFloatTimeDomainData(data);
-      const [pitch, clarity] = findPitch(data, context.sampleRate);
-
-      if (clarity > 0.9) {
-        render(activeTuning.parse(pitch));
-      }
-    }, 100);
-  });
